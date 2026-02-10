@@ -8,33 +8,31 @@ export default function Pagination({ pagination, onPageChange }) {
     const end = Math.min(currentPage * itemsPerPage, totalItems);
 
     return (
-        <div className="flex items-center justify-between border-t border-surface-200 bg-white px-4 py-3 sm:px-6">
-            <div className="text-sm text-surface-500">
-                Showing <span className="font-medium text-surface-800">{start}</span> to{' '}
-                <span className="font-medium text-surface-800">{end}</span> of{' '}
-                <span className="font-medium text-surface-800">{totalItems}</span> results
+        <div className="pagination">
+            <div className="pagination__info">
+                Showing <span className="pagination__info-highlight">{start}</span> to{' '}
+                <span className="pagination__info-highlight">{end}</span> of{' '}
+                <span className="pagination__info-highlight">{totalItems}</span> results
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="pagination__controls">
                 <button
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage <= 1}
-                    className="inline-flex items-center gap-1 rounded-lg border border-surface-300 px-3 py-1.5 text-sm font-medium text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                    className="pagination__btn"
                 >
-                    <HiOutlineChevronLeft className="w-4 h-4" /> Prev
+                    <HiOutlineChevronLeft className="pagination__btn-icon" /> Prev
                 </button>
 
-                <span className="inline-flex items-center justify-center min-w-[2rem] rounded-lg bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white">
-                    {currentPage}
-                </span>
-                <span className="text-sm text-surface-400">of {totalPages}</span>
+                <span className="pagination__current">{currentPage}</span>
+                <span className="pagination__total">of {totalPages}</span>
 
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage >= totalPages}
-                    className="inline-flex items-center gap-1 rounded-lg border border-surface-300 px-3 py-1.5 text-sm font-medium text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                    className="pagination__btn"
                 >
-                    Next <HiOutlineChevronRight className="w-4 h-4" />
+                    Next <HiOutlineChevronRight className="pagination__btn-icon" />
                 </button>
             </div>
         </div>

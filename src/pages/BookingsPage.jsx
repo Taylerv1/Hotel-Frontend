@@ -137,47 +137,45 @@ export default function BookingsPage() {
             <Toaster position="top-right" />
 
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="page-header">
                 <div>
-                    <h1 className="text-2xl font-bold text-surface-800">Bookings</h1>
-                    <p className="text-surface-400 text-sm mt-1">Manage hotel room reservations</p>
+                    <h1 className="page-title">Bookings</h1>
+                    <p className="page-subtitle">Manage hotel room reservations</p>
                 </div>
-                <button onClick={openCreate} className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 transition-colors cursor-pointer">
-                    <HiOutlinePlus className="w-4 h-4" /> New Booking
+                <button onClick={openCreate} className="btn-primary">
+                    <HiOutlinePlus className="btn-primary__icon" /> New Booking
                 </button>
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-xl border border-surface-200 p-4 mb-4">
-                <div className="flex flex-wrap gap-3">
-                    <select value={params.status} onChange={(e) => handleFilterChange('status', e.target.value)}
-                        className="px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
+            <div className="filter-bar">
+                <div className="filter-bar__row">
+                    <select value={params.status} onChange={(e) => handleFilterChange('status', e.target.value)} className="filter-select">
                         <option value="">All Statuses</option>
-                        {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
+                        {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
-                    <select value={params.roomType} onChange={(e) => handleFilterChange('roomType', e.target.value)}
-                        className="px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
+                    <select value={params.roomType} onChange={(e) => handleFilterChange('roomType', e.target.value)} className="filter-select">
                         <option value="">All Room Types</option>
-                        {ROOM_TYPES.map((r) => <option key={r} value={r} className="capitalize">{r}</option>)}
+                        {ROOM_TYPES.map((r) => <option key={r} value={r}>{r}</option>)}
                     </select>
                     <input type="number" placeholder="Min Price" value={params.minPrice} onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                        className="w-28 px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                        className="filter-input filter-input--price" />
                     <input type="number" placeholder="Max Price" value={params.maxPrice} onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                        className="w-28 px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                        className="filter-input filter-input--price" />
                 </div>
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl border border-surface-200 overflow-hidden">
+            <div className="table-card">
                 {loading ? (
                     <LoadingSpinner />
                 ) : bookings.length === 0 ? (
                     <EmptyState title="No bookings found" message="Try adjusting your filters or create a new booking." />
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
+                    <div className="table-card__scroll">
+                        <table className="data-table">
                             <thead>
-                                <tr className="border-b border-surface-100 bg-surface-50 text-left">
+                                <tr>
                                     {[
                                         { key: 'user', label: 'Guest', sortable: false },
                                         { key: 'roomNumber', label: 'Room' },
@@ -190,39 +188,39 @@ export default function BookingsPage() {
                                     ].map((col) => (
                                         <th key={col.key}
                                             onClick={col.sortable !== false ? () => toggleSort(col.key) : undefined}
-                                            className={`px-4 py-3 font-semibold text-surface-500 select-none ${col.sortable !== false ? 'cursor-pointer hover:text-surface-800' : ''}`}>
-                                            <span className="inline-flex items-center gap-1">
+                                            className={`data-table__th ${col.sortable !== false ? 'data-table__th--sortable' : ''}`}>
+                                            <span className="data-table__th-content">
                                                 {col.label}
-                                                {params.sort === col.key && <SortIcon className="w-4 h-4 text-primary-500" />}
+                                                {params.sort === col.key && <SortIcon className="data-table__sort-icon" />}
                                             </span>
                                         </th>
                                     ))}
-                                    <th className="px-4 py-3 font-semibold text-surface-500 text-right">Actions</th>
+                                    <th className="data-table__th data-table__th--right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {bookings.map((b) => (
-                                    <tr key={b._id} className="border-b border-surface-50 hover:bg-surface-50 transition-colors">
-                                        <td className="px-4 py-3">
+                                    <tr key={b._id}>
+                                        <td className="data-table__td">
                                             <div>
-                                                <div className="font-medium text-surface-800">{b.user?.name || 'N/A'}</div>
-                                                <div className="text-xs text-surface-400">{b.user?.email || ''}</div>
+                                                <div className="data-table__td--name">{b.user?.name || 'N/A'}</div>
+                                                <div className="data-table__td--email">{b.user?.email || ''}</div>
                                             </div>
                                         </td>
-                                        <td className="px-4 py-3 font-medium text-surface-800">{b.roomNumber}</td>
-                                        <td className="px-4 py-3 capitalize text-surface-600">{b.roomType}</td>
-                                        <td className="px-4 py-3 text-surface-600">{new Date(b.checkInDate).toLocaleDateString()}</td>
-                                        <td className="px-4 py-3 text-surface-600">{new Date(b.checkOutDate).toLocaleDateString()}</td>
-                                        <td className="px-4 py-3 text-center text-surface-600">{b.guests}</td>
-                                        <td className="px-4 py-3 font-semibold text-surface-800">${b.totalPrice}</td>
-                                        <td className="px-4 py-3"><StatusBadge status={b.status} /></td>
-                                        <td className="px-4 py-3 text-right">
-                                            <div className="inline-flex gap-1">
-                                                <button onClick={() => openEdit(b)} className="rounded-lg p-1.5 text-surface-400 hover:bg-primary-50 hover:text-primary-600 cursor-pointer">
-                                                    <HiOutlinePencil className="w-4 h-4" />
+                                        <td className="data-table__td data-table__td--bold">{b.roomNumber}</td>
+                                        <td className="data-table__td data-table__td--capitalize">{b.roomType}</td>
+                                        <td className="data-table__td">{new Date(b.checkInDate).toLocaleDateString()}</td>
+                                        <td className="data-table__td">{new Date(b.checkOutDate).toLocaleDateString()}</td>
+                                        <td className="data-table__td data-table__td--center">{b.guests}</td>
+                                        <td className="data-table__td data-table__td--bold">${b.totalPrice}</td>
+                                        <td className="data-table__td"><StatusBadge status={b.status} /></td>
+                                        <td className="data-table__td data-table__td--right">
+                                            <div className="actions-cell">
+                                                <button onClick={() => openEdit(b)} className="action-btn action-btn--edit">
+                                                    <HiOutlinePencil className="action-btn__icon" />
                                                 </button>
-                                                <button onClick={() => setDeleteTarget(b)} className="rounded-lg p-1.5 text-surface-400 hover:bg-red-50 hover:text-red-600 cursor-pointer">
-                                                    <HiOutlineTrash className="w-4 h-4" />
+                                                <button onClick={() => setDeleteTarget(b)} className="action-btn action-btn--delete">
+                                                    <HiOutlineTrash className="action-btn__icon" />
                                                 </button>
                                             </div>
                                         </td>
@@ -238,68 +236,55 @@ export default function BookingsPage() {
 
             {/* Create/Edit Modal */}
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingBooking ? 'Edit Booking' : 'New Booking'} size="lg">
-                <form onSubmit={handleSave} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="sm:col-span-2">
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Guest (User)</label>
-                            <select value={form.user} onChange={(e) => setForm({ ...form, user: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
+                <form onSubmit={handleSave} className="modal-form">
+                    <div className="modal-form__grid">
+                        <div className="modal-form__field--full">
+                            <label className="modal-form__label">Guest (User)</label>
+                            <select value={form.user} onChange={(e) => setForm({ ...form, user: e.target.value })} required className="modal-form__select">
                                 <option value="">Select a guest...</option>
                                 {allUsers.map((u) => <option key={u._id} value={u._id}>{u.name} ({u.email})</option>)}
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Room Number</label>
-                            <input type="text" value={form.roomNumber} onChange={(e) => setForm({ ...form, roomNumber: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Room Number</label>
+                            <input type="text" value={form.roomNumber} onChange={(e) => setForm({ ...form, roomNumber: e.target.value })} required className="modal-form__input" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Room Type</label>
-                            <select value={form.roomType} onChange={(e) => setForm({ ...form, roomType: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
-                                {ROOM_TYPES.map((r) => <option key={r} value={r} className="capitalize">{r}</option>)}
+                            <label className="modal-form__label">Room Type</label>
+                            <select value={form.roomType} onChange={(e) => setForm({ ...form, roomType: e.target.value })} required className="modal-form__select">
+                                {ROOM_TYPES.map((r) => <option key={r} value={r}>{r}</option>)}
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Check-in Date</label>
-                            <input type="date" value={form.checkInDate} onChange={(e) => setForm({ ...form, checkInDate: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Check-in Date</label>
+                            <input type="date" value={form.checkInDate} onChange={(e) => setForm({ ...form, checkInDate: e.target.value })} required className="modal-form__input" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Check-out Date</label>
-                            <input type="date" value={form.checkOutDate} onChange={(e) => setForm({ ...form, checkOutDate: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Check-out Date</label>
+                            <input type="date" value={form.checkOutDate} onChange={(e) => setForm({ ...form, checkOutDate: e.target.value })} required className="modal-form__input" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Guests</label>
-                            <input type="number" min="1" value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Guests</label>
+                            <input type="number" min="1" value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} required className="modal-form__input" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Total Price ($)</label>
-                            <input type="number" min="0" step="0.01" value={form.totalPrice} onChange={(e) => setForm({ ...form, totalPrice: e.target.value })} required
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Total Price ($)</label>
+                            <input type="number" min="0" step="0.01" value={form.totalPrice} onChange={(e) => setForm({ ...form, totalPrice: e.target.value })} required className="modal-form__input" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Status</label>
-                            <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
-                                {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
+                            <label className="modal-form__label">Status</label>
+                            <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="modal-form__select">
+                                {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
-                        <div className="sm:col-span-2">
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Notes</label>
-                            <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2}
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none" />
+                        <div className="modal-form__field--full">
+                            <label className="modal-form__label">Notes</label>
+                            <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2} className="modal-form__textarea" />
                         </div>
                     </div>
-                    <div className="flex gap-3 pt-2">
-                        <button type="button" onClick={() => setModalOpen(false)}
-                            className="flex-1 rounded-lg border border-surface-300 px-4 py-2.5 text-sm font-medium text-surface-600 hover:bg-surface-50 cursor-pointer">
-                            Cancel
-                        </button>
-                        <button type="submit" disabled={saving}
-                            className="flex-1 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-50 cursor-pointer">
+                    <div className="modal-form__actions">
+                        <button type="button" onClick={() => setModalOpen(false)} className="modal-form__cancel-btn">Cancel</button>
+                        <button type="submit" disabled={saving} className="modal-form__submit-btn">
                             {saving ? 'Saving...' : editingBooking ? 'Update' : 'Create'}
                         </button>
                     </div>

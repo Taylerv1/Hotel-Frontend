@@ -1,0 +1,30 @@
+@use 'styles/variables' as *;
+
+// ─── Partials ────────────────────────────────────────────
+@use 'styles/modal';
+@use 'styles/confirm-dialog';
+@use 'styles/empty-state';
+@use 'styles/loading-spinner';
+@use 'styles/pagination';
+@use 'styles/status-badge';
+@use 'styles/auth';
+@use 'styles/dashboard-layout';
+@use 'styles/dashboard';
+@use 'styles/pages';
+
+// ─── Global Reset / Base ─────────────────────────────────
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: $surface-50;
+    color: $surface-800;
+    font-family: $font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

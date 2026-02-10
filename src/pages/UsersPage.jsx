@@ -115,27 +115,27 @@ export default function UsersPage() {
             <Toaster position="top-right" />
 
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="page-header">
                 <div>
-                    <h1 className="text-2xl font-bold text-surface-800">Users</h1>
-                    <p className="text-surface-400 text-sm mt-1">Manage hotel clients and admins</p>
+                    <h1 className="page-title">Users</h1>
+                    <p className="page-subtitle">Manage hotel clients and admins</p>
                 </div>
-                <button onClick={openCreate} className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 transition-colors cursor-pointer">
-                    <HiOutlinePlus className="w-4 h-4" /> Add User
+                <button onClick={openCreate} className="btn-primary">
+                    <HiOutlinePlus className="btn-primary__icon" /> Add User
                 </button>
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-xl border border-surface-200 p-4 mb-4">
-                <div className="flex flex-wrap gap-3">
-                    <div className="relative flex-1 min-w-[200px]">
-                        <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+            <div className="filter-bar">
+                <div className="filter-bar__row">
+                    <div className="filter-search">
+                        <HiOutlineSearch className="filter-search__icon" />
                         <input
                             type="text"
                             placeholder="Search by name..."
                             value={params.name}
                             onChange={(e) => handleFilterChange('name', e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            className="filter-search__input"
                         />
                     </div>
                     <input
@@ -143,12 +143,12 @@ export default function UsersPage() {
                         placeholder="Search by email..."
                         value={params.email}
                         onChange={(e) => handleFilterChange('email', e.target.value)}
-                        className="flex-1 min-w-[200px] px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="filter-email-input"
                     />
                     <select
                         value={params.role}
                         onChange={(e) => handleFilterChange('role', e.target.value)}
-                        className="px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer"
+                        className="filter-select"
                     >
                         <option value="">All Roles</option>
                         <option value="user">User</option>
@@ -158,16 +158,16 @@ export default function UsersPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl border border-surface-200 overflow-hidden">
+            <div className="table-card">
                 {loading ? (
                     <LoadingSpinner />
                 ) : users.length === 0 ? (
                     <EmptyState title="No users found" message="Try adjusting your filters or add a new user." />
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
+                    <div className="table-card__scroll">
+                        <table className="data-table">
                             <thead>
-                                <tr className="border-b border-surface-100 bg-surface-50 text-left">
+                                <tr>
                                     {[
                                         { key: 'name', label: 'Name' },
                                         { key: 'email', label: 'Email' },
@@ -178,32 +178,32 @@ export default function UsersPage() {
                                         <th
                                             key={col.key}
                                             onClick={() => toggleSort(col.key)}
-                                            className="px-5 py-3 font-semibold text-surface-500 cursor-pointer hover:text-surface-800 select-none"
+                                            className="data-table__th data-table__th--sortable"
                                         >
-                                            <span className="inline-flex items-center gap-1">
+                                            <span className="data-table__th-content">
                                                 {col.label}
-                                                {params.sort === col.key && <SortIcon className="w-4 h-4 text-primary-500" />}
+                                                {params.sort === col.key && <SortIcon className="data-table__sort-icon" />}
                                             </span>
                                         </th>
                                     ))}
-                                    <th className="px-5 py-3 font-semibold text-surface-500 text-right">Actions</th>
+                                    <th className="data-table__th data-table__th--right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {users.map((u) => (
-                                    <tr key={u._id} className="border-b border-surface-50 hover:bg-surface-50 transition-colors">
-                                        <td className="px-5 py-3 font-medium text-surface-800">{u.name}</td>
-                                        <td className="px-5 py-3 text-surface-600">{u.email}</td>
-                                        <td className="px-5 py-3 text-surface-600">{u.phone || '—'}</td>
-                                        <td className="px-5 py-3"><StatusBadge status={u.role} /></td>
-                                        <td className="px-5 py-3 text-surface-500">{new Date(u.createdAt).toLocaleDateString()}</td>
-                                        <td className="px-5 py-3 text-right">
-                                            <div className="inline-flex gap-1">
-                                                <button onClick={() => openEdit(u)} className="rounded-lg p-1.5 text-surface-400 hover:bg-primary-50 hover:text-primary-600 cursor-pointer">
-                                                    <HiOutlinePencil className="w-4 h-4" />
+                                    <tr key={u._id}>
+                                        <td className="data-table__td data-table__td--name">{u.name}</td>
+                                        <td className="data-table__td">{u.email}</td>
+                                        <td className="data-table__td">{u.phone || '—'}</td>
+                                        <td className="data-table__td"><StatusBadge status={u.role} /></td>
+                                        <td className="data-table__td">{new Date(u.createdAt).toLocaleDateString()}</td>
+                                        <td className="data-table__td data-table__td--right">
+                                            <div className="actions-cell">
+                                                <button onClick={() => openEdit(u)} className="action-btn action-btn--edit">
+                                                    <HiOutlinePencil className="action-btn__icon" />
                                                 </button>
-                                                <button onClick={() => setDeleteTarget(u)} className="rounded-lg p-1.5 text-surface-400 hover:bg-red-50 hover:text-red-600 cursor-pointer">
-                                                    <HiOutlineTrash className="w-4 h-4" />
+                                                <button onClick={() => setDeleteTarget(u)} className="action-btn action-btn--delete">
+                                                    <HiOutlineTrash className="action-btn__icon" />
                                                 </button>
                                             </div>
                                         </td>
@@ -219,44 +219,35 @@ export default function UsersPage() {
 
             {/* Create/Edit Modal */}
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingUser ? 'Edit User' : 'Create User'}>
-                <form onSubmit={handleSave} className="space-y-4">
+                <form onSubmit={handleSave} className="modal-form">
                     <div>
-                        <label className="block text-sm font-medium text-surface-700 mb-1">Name</label>
-                        <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required minLength={2}
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                        <label className="modal-form__label">Name</label>
+                        <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required minLength={2} className="modal-form__input" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-surface-700 mb-1">Email</label>
-                        <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                        <label className="modal-form__label">Email</label>
+                        <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="modal-form__input" />
                     </div>
                     {!editingUser && (
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1">Password</label>
-                            <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={6}
-                                className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                            <label className="modal-form__label">Password</label>
+                            <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={6} className="modal-form__input" />
                         </div>
                     )}
                     <div>
-                        <label className="block text-sm font-medium text-surface-700 mb-1">Phone</label>
-                        <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                        <label className="modal-form__label">Phone</label>
+                        <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="modal-form__input" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-surface-700 mb-1">Role</label>
-                        <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-surface-300 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer">
+                        <label className="modal-form__label">Role</label>
+                        <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="modal-form__select">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <div className="flex gap-3 pt-2">
-                        <button type="button" onClick={() => setModalOpen(false)}
-                            className="flex-1 rounded-lg border border-surface-300 px-4 py-2.5 text-sm font-medium text-surface-600 hover:bg-surface-50 cursor-pointer">
-                            Cancel
-                        </button>
-                        <button type="submit" disabled={saving}
-                            className="flex-1 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-50 cursor-pointer">
+                    <div className="modal-form__actions">
+                        <button type="button" onClick={() => setModalOpen(false)} className="modal-form__cancel-btn">Cancel</button>
+                        <button type="submit" disabled={saving} className="modal-form__submit-btn">
                             {saving ? 'Saving...' : editingUser ? 'Update' : 'Create'}
                         </button>
                     </div>

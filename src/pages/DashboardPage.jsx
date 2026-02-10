@@ -38,67 +38,70 @@ export default function DashboardPage() {
     if (loading) return <LoadingSpinner size="lg" />;
 
     const cards = [
-        { label: 'Total Users', value: stats?.totalUsers, icon: HiOutlineUsers, color: 'bg-blue-500' },
-        { label: 'Total Bookings', value: stats?.totalBookings, icon: HiOutlineCalendar, color: 'bg-purple-500' },
-        { label: 'Confirmed', value: stats?.confirmed, icon: HiOutlineCheckCircle, color: 'bg-green-500' },
-        { label: 'Pending', value: stats?.pending, icon: HiOutlineClock, color: 'bg-yellow-500' },
+        { label: 'Total Users', value: stats?.totalUsers, icon: HiOutlineUsers, color: 'blue' },
+        { label: 'Total Bookings', value: stats?.totalBookings, icon: HiOutlineCalendar, color: 'purple' },
+        { label: 'Confirmed', value: stats?.confirmed, icon: HiOutlineCheckCircle, color: 'green' },
+        { label: 'Pending', value: stats?.pending, icon: HiOutlineClock, color: 'yellow' },
     ];
+
+    const getStatusClass = (status) => {
+        if (status === 'confirmed') return 'recent-bookings__status--confirmed';
+        if (status === 'pending') return 'recent-bookings__status--pending';
+        if (status === 'cancelled') return 'recent-bookings__status--cancelled';
+        return 'recent-bookings__status--default';
+    };
 
     return (
         <div>
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-surface-800">Dashboard</h1>
-                <p className="text-surface-400 text-sm mt-1">Overview of your hotel management system</p>
+            <div className="dashboard-header">
+                <h1 className="dashboard-header__title">Dashboard</h1>
+                <p className="dashboard-header__subtitle">Overview of your hotel management system</p>
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="stats-grid">
                 {cards.map((c) => (
-                    <div key={c.label} className="bg-white rounded-xl border border-surface-200 p-5 hover:shadow-md transition-shadow">
-                        <div className="flex items-center justify-between mb-3">
-                            <span className="text-sm font-medium text-surface-500">{c.label}</span>
-                            <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${c.color} bg-opacity-10`}>
-                                <c.icon className={`w-5 h-5 ${c.color.replace('bg-', 'text-')}`} />
+                    <div key={c.label} className="stat-card">
+                        <div className="stat-card__header">
+                            <span className="stat-card__label">{c.label}</span>
+                            <div className={`stat-card__icon-wrapper stat-card__icon-wrapper--${c.color}`}>
+                                <c.icon className={`stat-card__icon stat-card__icon--${c.color}`} />
                             </div>
                         </div>
-                        <p className="text-3xl font-bold text-surface-800">{c.value}</p>
+                        <p className="stat-card__value">{c.value}</p>
                     </div>
                 ))}
             </div>
 
             {/* Recent Bookings */}
-            <div className="bg-white rounded-xl border border-surface-200">
-                <div className="px-5 py-4 border-b border-surface-200">
-                    <h2 className="text-lg font-semibold text-surface-800">Recent Bookings</h2>
+            <div className="recent-bookings">
+                <div className="recent-bookings__header">
+                    <h2 className="recent-bookings__title">Recent Bookings</h2>
                 </div>
                 {recentBookings.length === 0 ? (
-                    <div className="p-8 text-center text-surface-400">No bookings yet</div>
+                    <div className="recent-bookings__empty">No bookings yet</div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
+                    <div className="recent-bookings__table-wrapper">
+                        <table className="recent-bookings__table">
                             <thead>
-                                <tr className="border-b border-surface-100 text-left">
-                                    <th className="px-5 py-3 font-semibold text-surface-500">Guest</th>
-                                    <th className="px-5 py-3 font-semibold text-surface-500">Room</th>
-                                    <th className="px-5 py-3 font-semibold text-surface-500">Check-in</th>
-                                    <th className="px-5 py-3 font-semibold text-surface-500">Status</th>
-                                    <th className="px-5 py-3 font-semibold text-surface-500">Price</th>
+                                <tr>
+                                    <th className="recent-bookings__th">Guest</th>
+                                    <th className="recent-bookings__th">Room</th>
+                                    <th className="recent-bookings__th">Check-in</th>
+                                    <th className="recent-bookings__th">Status</th>
+                                    <th className="recent-bookings__th">Price</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {recentBookings.map((b) => (
-                                    <tr key={b._id} className="border-b border-surface-50 hover:bg-surface-50">
-                                        <td className="px-5 py-3 font-medium text-surface-800">{b.user?.name || 'N/A'}</td>
-                                        <td className="px-5 py-3 text-surface-600">{b.roomNumber} ({b.roomType})</td>
-                                        <td className="px-5 py-3 text-surface-600">{new Date(b.checkInDate).toLocaleDateString()}</td>
-                                        <td className="px-5 py-3">
-                                            <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-semibold capitalize ${b.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                                                    b.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                                        b.status === 'cancelled' ? 'bg-red-100 text-red-700' :
-                                                            'bg-blue-100 text-blue-700'
-                                                }`}>{b.status}</span>
+                                    <tr key={b._id} className="recent-bookings__tr">
+                                        <td className="recent-bookings__td recent-bookings__td--name">{b.user?.name || 'N/A'}</td>
+                                        <td className="recent-bookings__td">{b.roomNumber} ({b.roomType})</td>
+                                        <td className="recent-bookings__td">{new Date(b.checkInDate).toLocaleDateString()}</td>
+                                        <td className="recent-bookings__td">
+                                            <span className={`recent-bookings__status ${getStatusClass(b.status)}`}>{b.status}</span>
                                         </td>
-                                        <td className="px-5 py-3 font-semibold text-surface-800">${b.totalPrice}</td>
+                                        <td className="recent-bookings__td recent-bookings__td--price">${b.totalPrice}</td>
                                     </tr>
                                 ))}
                             </tbody>

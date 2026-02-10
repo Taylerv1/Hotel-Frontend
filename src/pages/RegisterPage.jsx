@@ -35,34 +35,34 @@ export default function RegisterPage() {
     ];
 
     return (
-        <div className="flex min-h-screen">
+        <div className="auth-page">
             <Toaster position="top-right" />
 
             {/* Left Panel */}
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-accent-600 via-primary-700 to-surface-900 items-center justify-center p-12">
-                <div className="max-w-md text-center">
-                    <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-2xl bg-white/10 backdrop-blur mb-8">
-                        <span className="text-3xl font-bold text-white">H</span>
+            <div className="auth-panel auth-panel--register">
+                <div className="auth-panel__content">
+                    <div className="auth-panel__logo">
+                        <span className="auth-panel__logo-text">H</span>
                     </div>
-                    <h1 className="text-4xl font-bold text-white mb-4">Join HotelAdmin</h1>
-                    <p className="text-primary-200 text-lg">
+                    <h1 className="auth-panel__title">Join HotelAdmin</h1>
+                    <p className="auth-panel__subtitle">
                         Create your account and start managing hotel operations efficiently.
                     </p>
                 </div>
             </div>
 
             {/* Right Panel */}
-            <div className="flex flex-1 items-center justify-center p-6">
-                <div className="w-full max-w-md">
-                    <h2 className="text-2xl font-bold text-surface-800 mb-1">Create Account</h2>
-                    <p className="text-surface-400 mb-8">Fill in your details to get started</p>
+            <div className="auth-form-panel">
+                <div className="auth-form-container">
+                    <h2 className="auth-heading">Create Account</h2>
+                    <p className="auth-subheading">Fill in your details to get started</p>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="auth-form auth-form--register">
                         {fields.map((f) => (
                             <div key={f.name}>
-                                <label className="block text-sm font-medium text-surface-700 mb-1.5">{f.label}</label>
-                                <div className="relative">
-                                    <f.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                                <label className="auth-label">{f.label}</label>
+                                <div className="auth-input-wrapper">
+                                    <f.icon className="auth-input-icon" />
                                     <input
                                         type={f.type}
                                         value={form[f.name]}
@@ -70,26 +70,20 @@ export default function RegisterPage() {
                                         required={f.required}
                                         minLength={f.min}
                                         placeholder={f.placeholder}
-                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-surface-300 text-surface-800 placeholder:text-surface-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                        className="auth-input"
                                     />
                                 </div>
                             </div>
                         ))}
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 disabled:opacity-50 transition-colors cursor-pointer"
-                        >
+                        <button type="submit" disabled={loading} className="auth-submit-btn">
                             {loading ? 'Creating account...' : 'Create Account'}
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-sm text-surface-400">
+                    <p className="auth-footer">
                         Already have an account?{' '}
-                        <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700">
-                            Sign In
-                        </Link>
+                        <Link to="/login" className="auth-footer-link">Sign In</Link>
                     </p>
                 </div>
             </div>

@@ -27,55 +27,55 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div className="auth-page">
             <Toaster position="top-right" />
 
             {/* Left Panel */}
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-700 via-primary-800 to-surface-900 items-center justify-center p-12">
-                <div className="max-w-md text-center">
-                    <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-2xl bg-white/10 backdrop-blur mb-8">
-                        <span className="text-3xl font-bold text-white">H</span>
+            <div className="auth-panel auth-panel--login">
+                <div className="auth-panel__content">
+                    <div className="auth-panel__logo">
+                        <span className="auth-panel__logo-text">H</span>
                     </div>
-                    <h1 className="text-4xl font-bold text-white mb-4">Hotel Booking Admin</h1>
-                    <p className="text-primary-200 text-lg">
+                    <h1 className="auth-panel__title">Hotel Booking Admin</h1>
+                    <p className="auth-panel__subtitle">
                         Manage your hotel bookings, guests, and rooms all in one place.
                     </p>
                 </div>
             </div>
 
             {/* Right Panel */}
-            <div className="flex flex-1 items-center justify-center p-6">
-                <div className="w-full max-w-md">
-                    <div className="lg:hidden mb-8 text-center">
-                        <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-xl bg-primary-600 mb-4">
-                            <span className="text-xl font-bold text-white">H</span>
+            <div className="auth-form-panel">
+                <div className="auth-form-container">
+                    <div className="auth-mobile-header">
+                        <div className="auth-mobile-logo">
+                            <span className="auth-mobile-logo-text">H</span>
                         </div>
-                        <h1 className="text-2xl font-bold text-surface-800">Hotel Booking Admin</h1>
+                        <h1 className="auth-mobile-title">Hotel Booking Admin</h1>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-surface-800 mb-1">Welcome back</h2>
-                    <p className="text-surface-400 mb-8">Enter your credentials to access the dashboard</p>
+                    <h2 className="auth-heading">Welcome back</h2>
+                    <p className="auth-subheading">Enter your credentials to access the dashboard</p>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="auth-form">
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1.5">Email</label>
-                            <div className="relative">
-                                <HiOutlineMail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                            <label className="auth-label">Email</label>
+                            <div className="auth-input-wrapper">
+                                <HiOutlineMail className="auth-input-icon" />
                                 <input
                                     type="email"
                                     value={form.email}
                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                                     required
                                     placeholder="admin@hotel.com"
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-surface-300 text-surface-800 placeholder:text-surface-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                    className="auth-input"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-surface-700 mb-1.5">Password</label>
-                            <div className="relative">
-                                <HiOutlineLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
+                            <label className="auth-label">Password</label>
+                            <div className="auth-input-wrapper">
+                                <HiOutlineLockClosed className="auth-input-icon" />
                                 <input
                                     type="password"
                                     value={form.password}
@@ -83,25 +83,19 @@ export default function LoginPage() {
                                     required
                                     minLength={6}
                                     placeholder="••••••••"
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-surface-300 text-surface-800 placeholder:text-surface-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                    className="auth-input"
                                 />
                             </div>
                         </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 disabled:opacity-50 transition-colors cursor-pointer"
-                        >
+                        <button type="submit" disabled={loading} className="auth-submit-btn">
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-sm text-surface-400">
+                    <p className="auth-footer">
                         Don&apos;t have an account?{' '}
-                        <Link to="/register" className="font-semibold text-primary-600 hover:text-primary-700">
-                            Register
-                        </Link>
+                        <Link to="/register" className="auth-footer-link">Register</Link>
                     </p>
                 </div>
             </div>

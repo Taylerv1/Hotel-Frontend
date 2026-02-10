@@ -1,0 +1,363 @@
+@use 'variables' as *;
+
+// ─── Shared Page Styles (Bookings & Users) ───────────────
+
+// Page header row
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: $bp-sm) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $surface-800;
+}
+
+.page-subtitle {
+    color: $surface-400;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+// Primary action button
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: $primary-600;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $white;
+    cursor: pointer;
+    transition: $transition-colors;
+
+    &:hover {
+        background: $primary-700;
+    }
+}
+
+.btn-primary__icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+// Filter bar
+.filter-bar {
+    background: $white;
+    border-radius: 0.75rem;
+    border: 1px solid $surface-200;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-bar__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+// Form controls for filters
+.filter-select,
+.filter-input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid $surface-300;
+    background: $white;
+    color: $surface-800;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px $primary-500;
+    }
+}
+
+.filter-select {
+    cursor: pointer;
+}
+
+.filter-input--price {
+    width: 7rem;
+}
+
+// Search field with icon
+.filter-search {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-search__icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: $surface-400;
+}
+
+.filter-search__input {
+    width: 100%;
+    padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid $surface-300;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px $primary-500;
+    }
+}
+
+.filter-email-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid $surface-300;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px $primary-500;
+    }
+}
+
+// Data table card
+.table-card {
+    background: $white;
+    border-radius: 0.75rem;
+    border: 1px solid $surface-200;
+    overflow: hidden;
+}
+
+.table-card__scroll {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+}
+
+.data-table thead tr {
+    border-bottom: 1px solid $surface-100;
+    background: $surface-50;
+    text-align: left;
+}
+
+.data-table__th {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: $surface-500;
+    user-select: none;
+
+    &--sortable {
+        cursor: pointer;
+
+        &:hover {
+            color: $surface-800;
+        }
+    }
+
+    &--right {
+        text-align: right;
+    }
+}
+
+.data-table__th-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.data-table__sort-icon {
+    width: 1rem;
+    height: 1rem;
+    color: $primary-500;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid $surface-50;
+    transition: $transition-colors;
+
+    &:hover {
+        background: $surface-50;
+    }
+}
+
+.data-table__td {
+    padding: 0.75rem 1rem;
+    color: $surface-600;
+
+    &--name {
+        font-weight: 500;
+        color: $surface-800;
+    }
+
+    &--email {
+        font-size: 0.75rem;
+        color: $surface-400;
+    }
+
+    &--bold {
+        font-weight: 600;
+        color: $surface-800;
+    }
+
+    &--capitalize {
+        text-transform: capitalize;
+    }
+
+    &--center {
+        text-align: center;
+    }
+
+    &--right {
+        text-align: right;
+    }
+}
+
+// Action button (icon-only)
+.action-btn {
+    border-radius: 0.5rem;
+    padding: 0.375rem;
+    background: none;
+    border: none;
+    color: $surface-400;
+    cursor: pointer;
+    transition: $transition-colors;
+
+    &--edit:hover {
+        background: rgba($primary-500, 0.08);
+        color: $primary-600;
+    }
+
+    &--delete:hover {
+        background: $red-50;
+        color: $red-600;
+    }
+}
+
+.action-btn__icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.actions-cell {
+    display: inline-flex;
+    gap: 0.25rem;
+}
+
+// ─── Form inside modals ─────────────────────────────────
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-form__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @media (min-width: $bp-sm) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.modal-form__field--full {
+    @media (min-width: $bp-sm) {
+        grid-column: span 2;
+    }
+}
+
+.modal-form__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $surface-700;
+    margin-bottom: 0.25rem;
+}
+
+.modal-form__input,
+.modal-form__select,
+.modal-form__textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid $surface-300;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px $primary-500;
+    }
+}
+
+.modal-form__select {
+    cursor: pointer;
+}
+
+.modal-form__textarea {
+    resize: none;
+}
+
+.modal-form__actions {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+}
+
+.modal-form__cancel-btn {
+    flex: 1;
+    border-radius: 0.5rem;
+    border: 1px solid $surface-300;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $surface-600;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+        background: $surface-50;
+    }
+}
+
+.modal-form__submit-btn {
+    flex: 1;
+    border-radius: 0.5rem;
+    border: none;
+    background: $primary-600;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $white;
+    cursor: pointer;
+
+    &:hover {
+        background: $primary-700;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+    }
+}

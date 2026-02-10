@@ -1,0 +1,42 @@
+@use 'variables' as *;
+
+// ─── Status Badge ────────────────────────────────────────
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+
+    &--pending {
+        background: $yellow-100;
+        color: $yellow-700;
+    }
+
+    &--confirmed {
+        background: $green-100;
+        color: $green-700;
+    }
+
+    &--cancelled {
+        background: $red-100;
+        color: $red-700;
+    }
+
+    &--completed {
+        background: $blue-100;
+        color: $blue-700;
+    }
+
+    &--admin {
+        background: $purple-100;
+        color: $purple-700;
+    }
+
+    &--user {
+        background: $surface-100;
+        color: $surface-600;
+    }
+}
