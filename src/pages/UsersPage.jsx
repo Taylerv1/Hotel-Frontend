@@ -1,114 +1,39 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getUsers, createUser, updateUser, deleteUser } from '../api/usersApi';
+import useUsers from '../hooks/useUsers';
 import Pagination from '../components/Pagination';
 import StatusBadge from '../components/StatusBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
 import ConfirmDialog from '../components/ConfirmDialog';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash, HiOutlineSearch, HiOutlineSortAscending, HiOutlineSortDescending } from 'react-icons/hi';
 
-const INITIAL_FORM = { name: '', email: '', password: '', phone: '', role: 'user' };
-
 export default function UsersPage() {
-    const [users, setUsers] = useState([]);
-    const [pagination, setPagination] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [params, setParams] = useState({ page: 1, limit: 10, sort: 'createdAt', order: 'desc', name: '', email: '', role: '' });
-
-    // Modal states
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
-    const [form, setForm] = useState(INITIAL_FORM);
-    const [saving, setSaving] = useState(false);
-
-    // Delete states
-    const [deleteTarget, setDeleteTarget] = useState(null);
-    const [deleting, setDeleting] = useState(false);
-
-    const fetchUsers = useCallback(async () => {
-        setLoading(true);
-        try {
-            const query = { page: params.page, limit: params.limit, sort: params.sort, order: params.order };
-            if (params.name) query.name = params.name;
-            if (params.email) query.email = params.email;
-            if (params.role) query.role = params.role;
-            const res = await getUsers(query);
-            setUsers(res.data.users || []);
-            setPagination(res.data.pagination || null);
-        } catch (err) {
-            toast.error('Failed to load users');
-        } finally {
-            setLoading(false);
-        }
-    }, [params]);
-
-    useEffect(() => { fetchUsers(); }, [fetchUsers]);
-
-    const handleFilterChange = (key, value) => {
-        setParams((p) => ({ ...p, [key]: value, page: 1 }));
-    };
-
-    const toggleSort = (field) => {
-        setParams((p) => ({
-            ...p,
-            sort: field,
-            order: p.sort === field && p.order === 'asc' ? 'desc' : 'asc',
-        }));
-    };
+    // All logic is handled by the useUsers hook — this component is purely visual
+    const {
+        users,
+        pagination,
+        loading,
+        params,
+        handleFilterChange,
+        toggleSort,
+        setPage,
+        modalOpen,
+        setModalOpen,
+        editingUser,
+        form,
+        setForm,
+        saving,
+        openCreate,
+        openEdit,
+        handleSave,
+        deleteTarget,
+        setDeleteTarget,
+        deleting,
+        handleDelete,
+    } = useUsers();
 
     const SortIcon = params.order === 'asc' ? HiOutlineSortAscending : HiOutlineSortDescending;
-
-    // Create / Edit
-    const openCreate = () => {
-        setEditingUser(null);
-        setForm(INITIAL_FORM);
-        setModalOpen(true);
-    };
-
-    const openEdit = (user) => {
-        setEditingUser(user);
-        setForm({ name: user.name, email: user.email, password: '', phone: user.phone || '', role: user.role });
-        setModalOpen(true);
-    };
-
-    const handleSave = async (e) => {
-        e.preventDefault();
-        setSaving(true);
-        try {
-            if (editingUser) {
-                const data = { name: form.name, email: form.email, phone: form.phone, role: form.role };
-                await updateUser(editingUser._id, data);
-                toast.success('User updated');
-            } else {
-                await createUser(form);
-                toast.success('User created');
-            }
-            setModalOpen(false);
-            fetchUsers();
-        } catch (err) {
-            const msg = err.response?.data?.message || err.response?.data?.errors?.map(e => e.message).join(', ') || 'Operation failed';
-            toast.error(msg);
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    // Delete
-    const handleDelete = async () => {
-        setDeleting(true);
-        try {
-            await deleteUser(deleteTarget._id);
-            toast.success('User deleted');
-            setDeleteTarget(null);
-            fetchUsers();
-        } catch (err) {
-            toast.error(err.response?.data?.message || 'Delete failed');
-        } finally {
-            setDeleting(false);
-        }
-    };
 
     return (
         <div>
@@ -214,7 +139,7 @@ export default function UsersPage() {
                     </div>
                 )}
 
-                <Pagination pagination={pagination} onPageChange={(p) => setParams((prev) => ({ ...prev, page: p }))} />
+                <Pagination pagination={pagination} onPageChange={setPage} />
             </div>
 
             {/* Create/Edit Modal */}

@@ -1,136 +1,42 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getBookings, createBooking, updateBooking, deleteBooking } from '../api/bookingsApi';
-import { getUsers } from '../api/usersApi';
+import useBookings from '../hooks/useBookings';
 import Pagination from '../components/Pagination';
 import StatusBadge from '../components/StatusBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 import Modal from '../components/Modal';
 import ConfirmDialog from '../components/ConfirmDialog';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash, HiOutlineSortAscending, HiOutlineSortDescending } from 'react-icons/hi';
 
-const ROOM_TYPES = ['single', 'double', 'suite', 'deluxe'];
-const STATUSES = ['pending', 'confirmed', 'cancelled', 'completed'];
-const INITIAL_FORM = {
-    user: '', roomNumber: '', roomType: 'single', checkInDate: '', checkOutDate: '', guests: 1, totalPrice: 0, status: 'pending', notes: '',
-};
-
 export default function BookingsPage() {
-    const [bookings, setBookings] = useState([]);
-    const [pagination, setPagination] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [allUsers, setAllUsers] = useState([]);
-    const [params, setParams] = useState({
-        page: 1, limit: 10, sort: 'createdAt', order: 'desc',
-        status: '', roomType: '', minPrice: '', maxPrice: '',
-    });
-
-    // Modal
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editingBooking, setEditingBooking] = useState(null);
-    const [form, setForm] = useState(INITIAL_FORM);
-    const [saving, setSaving] = useState(false);
-
-    // Delete
-    const [deleteTarget, setDeleteTarget] = useState(null);
-    const [deleting, setDeleting] = useState(false);
-
-    // Fetch users for dropdown
-    useEffect(() => {
-        getUsers({ limit: 100 }).then((res) => setAllUsers(res.data.users || [])).catch(() => { });
-    }, []);
-
-    const fetchBookings = useCallback(async () => {
-        setLoading(true);
-        try {
-            const query = { page: params.page, limit: params.limit, sort: params.sort, order: params.order };
-            if (params.status) query.status = params.status;
-            if (params.roomType) query.roomType = params.roomType;
-            if (params.minPrice) query.minPrice = params.minPrice;
-            if (params.maxPrice) query.maxPrice = params.maxPrice;
-            const res = await getBookings(query);
-            setBookings(res.data.bookings || []);
-            setPagination(res.data.pagination || null);
-        } catch (err) {
-            toast.error('Failed to load bookings');
-        } finally {
-            setLoading(false);
-        }
-    }, [params]);
-
-    useEffect(() => { fetchBookings(); }, [fetchBookings]);
-
-    const handleFilterChange = (key, value) => {
-        setParams((p) => ({ ...p, [key]: value, page: 1 }));
-    };
-
-    const toggleSort = (field) => {
-        setParams((p) => ({ ...p, sort: field, order: p.sort === field && p.order === 'asc' ? 'desc' : 'asc' }));
-    };
+    // All logic is handled by the useBookings hook — this component is purely visual
+    const {
+        ROOM_TYPES,
+        STATUSES,
+        bookings,
+        pagination,
+        loading,
+        allUsers,
+        params,
+        handleFilterChange,
+        toggleSort,
+        setPage,
+        modalOpen,
+        setModalOpen,
+        editingBooking,
+        form,
+        setForm,
+        saving,
+        openCreate,
+        openEdit,
+        handleSave,
+        deleteTarget,
+        setDeleteTarget,
+        deleting,
+        handleDelete,
+    } = useBookings();
 
     const SortIcon = params.order === 'asc' ? HiOutlineSortAscending : HiOutlineSortDescending;
-
-    // Create
-    const openCreate = () => {
-        setEditingBooking(null);
-        setForm(INITIAL_FORM);
-        setModalOpen(true);
-    };
-
-    // Edit
-    const openEdit = (b) => {
-        setEditingBooking(b);
-        setForm({
-            user: b.user?._id || b.user || '',
-            roomNumber: b.roomNumber,
-            roomType: b.roomType,
-            checkInDate: b.checkInDate ? b.checkInDate.substring(0, 10) : '',
-            checkOutDate: b.checkOutDate ? b.checkOutDate.substring(0, 10) : '',
-            guests: b.guests,
-            totalPrice: b.totalPrice,
-            status: b.status,
-            notes: b.notes || '',
-        });
-        setModalOpen(true);
-    };
-
-    const handleSave = async (e) => {
-        e.preventDefault();
-        setSaving(true);
-        try {
-            const data = { ...form, guests: Number(form.guests), totalPrice: Number(form.totalPrice) };
-            if (editingBooking) {
-                await updateBooking(editingBooking._id, data);
-                toast.success('Booking updated');
-            } else {
-                await createBooking(data);
-                toast.success('Booking created');
-            }
-            setModalOpen(false);
-            fetchBookings();
-        } catch (err) {
-            const msg = err.response?.data?.message || err.response?.data?.errors?.map(e => e.message).join(', ') || 'Operation failed';
-            toast.error(msg);
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    // Delete
-    const handleDelete = async () => {
-        setDeleting(true);
-        try {
-            await deleteBooking(deleteTarget._id);
-            toast.success('Booking deleted');
-            setDeleteTarget(null);
-            fetchBookings();
-        } catch (err) {
-            toast.error(err.response?.data?.message || 'Delete failed');
-        } finally {
-            setDeleting(false);
-        }
-    };
 
     return (
         <div>
@@ -231,7 +137,7 @@ export default function BookingsPage() {
                     </div>
                 )}
 
-                <Pagination pagination={pagination} onPageChange={(p) => setParams((prev) => ({ ...prev, page: p }))} />
+                <Pagination pagination={pagination} onPageChange={setPage} />
             </div>
 
             {/* Create/Edit Modal */}
