@@ -1,7 +1,7 @@
-import StatusBadge from './StatusBadge';
-import LoadingSpinner from './LoadingSpinner';
-import EmptyState from './EmptyState';
-import Pagination from './Pagination';
+import StatusBadge from '../../../components/StatusBadge';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import EmptyState from '../../../components/EmptyState';
+import Pagination from '../../../components/Pagination';
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineSortAscending, HiOutlineSortDescending } from 'react-icons/hi';
 
 /**

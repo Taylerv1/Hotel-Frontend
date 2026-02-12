@@ -1,16 +1,16 @@
-import useBookings from '../hooks/useBookings';
-import BookingFilters from '../components/BookingFilters';
-import BookingsTable from '../components/BookingsTable';
-import BookingForm from '../components/BookingForm';
-import Modal from '../components/Modal';
-import ConfirmDialog from '../components/ConfirmDialog';
+import useBookings from './hooks/useBookings';
+import BookingFilters from './components/BookingFilters';
+import BookingsTable from './components/BookingsTable';
+import BookingForm from './components/BookingForm';
+import Modal from '../../components/Modal';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import { Toaster } from 'react-hot-toast';
 import { HiOutlinePlus } from 'react-icons/hi';
 
 /**
  * BookingsPage — The main bookings page.
  *
- * This is now a thin "orchestrator" component. It:
+ * This is a thin "orchestrator" component. It:
  *   1. Calls the useBookings() hook to get all state and handlers.
  *   2. Passes the relevant data as props to each sub-component.
  *   3. Does NOT contain any business logic or large JSX blocks itself.
@@ -19,7 +19,7 @@ import { HiOutlinePlus } from 'react-icons/hi';
  *   - BookingFilters → filter bar (status, room type, price range)
  *   - BookingsTable  → data table with sorting, pagination, and row actions
  *   - BookingForm    → create/edit form rendered inside a Modal
- *   - ConfirmDialog  → delete confirmation dialog
+ *   - ConfirmDialog  → delete confirmation dialog (shared component)
  */
 export default function BookingsPage() {
     const {

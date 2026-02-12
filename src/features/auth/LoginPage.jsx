@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import toast, { Toaster } from 'react-hot-toast';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 
+/**
+ * LoginPage — The login screen for the hotel admin system.
+ *
+ * Responsibility:
+ *   Renders the login form with email and password fields.
+ *   Calls the AuthContext's login() method on submit, then
+ *   navigates to /dashboard on success.
+ *   If the user is already authenticated, redirects immediately.
+ */
 export default function LoginPage() {
     const { login, isAuthenticated } = useAuth();
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getBookings, createBooking, updateBooking, deleteBooking } from '../api/bookingsApi';
-import { getUsers } from '../api/usersApi';
+import { getBookings, createBooking, updateBooking, deleteBooking } from '../../../api/bookingsApi';
+import { getUsers } from '../../../api/usersApi';
 import toast from 'react-hot-toast';
 
 // ─── Constants ──────────────────────────────────────────────

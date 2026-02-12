@@ -2,11 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
-import DashboardPage from '../pages/DashboardPage';
-import UsersPage from '../pages/UsersPage';
-import BookingsPage from '../pages/BookingsPage';
+
+// ── Feature Pages ───────────────────────────────────────────
+// Each page is imported from its own feature folder
+import LoginPage from '../features/auth/LoginPage';
+import RegisterPage from '../features/auth/RegisterPage';
+import DashboardPage from '../features/dashboard/DashboardPage';
+import UsersPage from '../features/users/UsersPage';
+import BookingsPage from '../features/bookings/BookingsPage';
 
 export default function AppRouter() {
     return (

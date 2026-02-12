@@ -1,16 +1,16 @@
-import useUsers from '../hooks/useUsers';
-import UserFilters from '../components/UserFilters';
-import UsersTable from '../components/UsersTable';
-import UserForm from '../components/UserForm';
-import Modal from '../components/Modal';
-import ConfirmDialog from '../components/ConfirmDialog';
+import useUsers from './hooks/useUsers';
+import UserFilters from './components/UserFilters';
+import UsersTable from './components/UsersTable';
+import UserForm from './components/UserForm';
+import Modal from '../../components/Modal';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import { Toaster } from 'react-hot-toast';
 import { HiOutlinePlus } from 'react-icons/hi';
 
 /**
  * UsersPage — The main users page.
  *
- * This is now a thin "orchestrator" component. It:
+ * This is a thin "orchestrator" component. It:
  *   1. Calls the useUsers() hook to get all state and handlers.
  *   2. Passes the relevant data as props to each sub-component.
  *   3. Does NOT contain any business logic or large JSX blocks itself.
@@ -19,7 +19,7 @@ import { HiOutlinePlus } from 'react-icons/hi';
  *   - UserFilters  → filter bar (name search, email search, role dropdown)
  *   - UsersTable   → data table with sorting, pagination, and row actions
  *   - UserForm     → create/edit form rendered inside a Modal
- *   - ConfirmDialog → delete confirmation dialog
+ *   - ConfirmDialog → delete confirmation dialog (shared component)
  */
 export default function UsersPage() {
     const {

@@ -1,7 +1,7 @@
-import StatusBadge from './StatusBadge';
-import LoadingSpinner from './LoadingSpinner';
-import EmptyState from './EmptyState';
-import Pagination from './Pagination';
+import StatusBadge from '../../../components/StatusBadge';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import EmptyState from '../../../components/EmptyState';
+import Pagination from '../../../components/Pagination';
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineSortAscending, HiOutlineSortDescending } from 'react-icons/hi';
 
 /**
@@ -14,7 +14,7 @@ import { HiOutlinePencil, HiOutlineTrash, HiOutlineSortAscending, HiOutlineSortD
  * Props:
  *   - users          → array of user objects to display
  *   - loading        → whether data is currently being fetched
- *   - params         → current sort field and order (for highlighting active sort column)
+ *   - params         → current sort field and order
  *   - toggleSort     → function(field) to toggle sort on a column
  *   - pagination     → pagination metadata object
  *   - setPage        → function(page) to navigate to a page
@@ -22,10 +22,8 @@ import { HiOutlinePencil, HiOutlineTrash, HiOutlineSortAscending, HiOutlineSortD
  *   - setDeleteTarget → function(user) to open the delete confirmation for a user
  */
 export default function UsersTable({ users, loading, params, toggleSort, pagination, setPage, openEdit, setDeleteTarget }) {
-    // Choose the correct sort icon based on current sort order
     const SortIcon = params.order === 'asc' ? HiOutlineSortAscending : HiOutlineSortDescending;
 
-    // Column definitions for the table header
     const columns = [
         { key: 'name', label: 'Name' },
         { key: 'email', label: 'Email' },

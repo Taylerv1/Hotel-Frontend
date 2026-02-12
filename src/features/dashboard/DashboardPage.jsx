@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react';
 import { HiOutlineUsers, HiOutlineCalendar, HiOutlineCheckCircle, HiOutlineClock } from 'react-icons/hi';
-import { getUsers } from '../api/usersApi';
-import { getBookings } from '../api/bookingsApi';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { getUsers } from '../../api/usersApi';
+import { getBookings } from '../../api/bookingsApi';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
+/**
+ * DashboardPage — The main overview page shown after login.
+ *
+ * Responsibility:
+ *   Fetches summary statistics (total users, total bookings,
+ *   confirmed count, pending count) and recent bookings from the API.
+ *   Renders stat cards and a recent-bookings table.
+ *   Uses the shared LoadingSpinner while data loads.
+ */
 export default function DashboardPage() {
     const [stats, setStats] = useState(null);
     const [recentBookings, setRecentBookings] = useState([]);
