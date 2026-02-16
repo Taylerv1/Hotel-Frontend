@@ -201,11 +201,7 @@
 
 .topbar__user-info {
     text-align: right;
-    display: none;
-
-    @media (min-width: $bp-sm) {
-        display: block;
-    }
+    display: block;
 }
 
 .topbar__user-name {
