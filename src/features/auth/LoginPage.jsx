@@ -42,9 +42,6 @@ export default function LoginPage() {
             {/* Left Panel */}
             <div className="auth-panel auth-panel--login">
                 <div className="auth-panel__content">
-                    <div className="auth-panel__logo">
-                        <span className="auth-panel__logo-text">H</span>
-                    </div>
                     <h1 className="auth-panel__title">Hotel Booking Admin</h1>
                     <p className="auth-panel__subtitle">
                         Manage your hotel bookings, guests, and rooms all in one place.

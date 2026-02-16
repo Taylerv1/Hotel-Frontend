@@ -19,30 +19,49 @@
     }
 
     &--login {
-        background: linear-gradient(to bottom right, $primary-700, $primary-800, $surface-900);
+        position: relative;
+        background-image: url('/src/assets/loginImage.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        // Semi-transparent overlay for text readability
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right,
+                    rgb(0 0 0 / 44%), rgb(0 0 0 / 44%), rgb(0 0 0 / 40%))
+        }
     }
 
     &--register {
-        background: linear-gradient(to bottom right, $accent-600, $primary-700, $surface-900);
+        position: relative;
+        background-image: url('/src/assets/registerImage.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        // Semi-transparent overlay for text readability
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right,
+                    rgb(0 0 0 / 44%),
+                    rgb(0 0 0 / 44%),
+                    rgb(0 0 0 / 40%));
+        }
     }
 }
 
 .auth-panel__content {
+    position: relative;
+    z-index: 1;
     max-width: 28rem;
     text-align: center;
 }
 
-.auth-panel__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    margin: 0 auto 2rem;
-    border-radius: 1rem;
-    background: rgba($white, 0.1);
-    backdrop-filter: blur(4px);
-}
 
 .auth-panel__logo-text {
     font-size: 1.875rem;
@@ -58,7 +77,7 @@
 }
 
 .auth-panel__subtitle {
-    color: $primary-200;
+    color: $white;
     font-size: 1.125rem;
 }
 

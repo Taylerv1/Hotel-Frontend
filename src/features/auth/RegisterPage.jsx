@@ -50,9 +50,6 @@ export default function RegisterPage() {
             {/* Left Panel */}
             <div className="auth-panel auth-panel--register">
                 <div className="auth-panel__content">
-                    <div className="auth-panel__logo">
-                        <span className="auth-panel__logo-text">H</span>
-                    </div>
                     <h1 className="auth-panel__title">Join HotelAdmin</h1>
                     <p className="auth-panel__subtitle">
                         Create your account and start managing hotel operations efficiently.
